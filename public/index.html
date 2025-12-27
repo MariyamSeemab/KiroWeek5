@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bambaiyya-Binary Logistics Decoder</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="terminal-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h3>🔧 TOOLS</h3>
+                <button class="hamburger-btn" id="hamburgerBtn">☰</button>
+            </div>
+            <nav class="sidebar-nav">
+                <button class="sidebar-btn" id="debuggerBtn" data-tool="debugger">
+                    <span class="tool-icon">🔧</span>
+                    <span class="tool-name">Bambaiyya Debugger</span>
+                </button>
+                <button class="sidebar-btn" id="latencyBtn" data-tool="latency">
+                    <span class="tool-icon">🚂</span>
+                    <span class="tool-name">Network Latency Engine</span>
+                </button>
+                <button class="sidebar-btn" id="lifecycleBtn" data-tool="lifecycle">
+                    <span class="tool-icon">📦</span>
+                    <span class="tool-name">Packet Lifecycle Tracker</span>
+                </button>
+            </nav>
+        </aside>
+
+        <!-- Open Sidebar Button (shown when sidebar is closed) -->
+        <button class="open-sidebar-btn" id="openSidebarBtn" style="display: none;">☰</button>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <header class="terminal-header">
+            <div class="header-content">
+                <h1 class="terminal-title">BAMBAIYYA-BINARY</h1>
+                <p class="terminal-subtitle">Gold Tier Terminal for the Dabbawala Network</p>
+                <div class="system-status" id="systemStatus">
+                    <span class="status-indicator" id="statusIndicator">●</span>
+                    <span id="statusText">Initializing...</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Interface -->
+        <main class="terminal-main">
+            <!-- Input Section -->
+            <section class="input-section">
+                <div class="input-header">
+                    <h2>📦 DELIVERY MARKER INPUT</h2>
+                    <p>Format: "Color Symbol - Station - Sequence"</p>
+                </div>
+                
+                <div class="input-methods">
+                    <!-- Text Input -->
+                    <div class="text-input-container">
+                        <label for="markerInput">Enter Delivery Marker:</label>
+                        <div class="input-group">
+                            <input 
+                                type="text" 
+                                id="markerInput" 
+                                placeholder="Red Triangle - VLP - 4"
+                                autocomplete="off"
+                            >
+                            <button id="processBtn" class="process-btn">DECODE</button>
+                        </div>
+                        <div class="input-examples">
+                            <span>Examples:</span>
+                            <button class="example-btn" data-example="Red Triangle - VLP - 4">Red Triangle - VLP - 4</button>
+                            <button class="example-btn" data-example="Blue Circle - DDR - 1">Blue Circle - DDR - 1</button>
+                            <button class="example-btn" data-example="Green Square - BKC - 7">Green Square - BKC - 7</button>
+                        </div>
+                    </div>
+
+                    <!-- Symbol Grid -->
+                    <div class="symbol-grid-container">
+                        <h3>🎯 SYMBOL INPUT GRID</h3>
+                        <div class="symbol-grid">
+                            <div class="symbol-category">
+                                <h4>Colors</h4>
+                                <div class="symbol-buttons" id="colorButtons">
+                                    <!-- Populated by JavaScript -->
+                                </div>
+                            </div>
+                            <div class="symbol-category">
+                                <h4>Symbols</h4>
+                                <div class="symbol-buttons" id="symbolButtons">
+                                    <!-- Populated by JavaScript -->
+                                </div>
+                            </div>
+                            <div class="symbol-category">
+                                <h4>Stations</h4>
+                                <div class="symbol-buttons" id="stationButtons">
+                                    <!-- Populated by JavaScript -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid-input">
+                            <input type="text" id="gridResult" placeholder="Selected: " readonly>
+                            <input type="number" id="sequenceInput" placeholder="Seq" min="1" max="999" value="1">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Output Section -->
+            <section class="output-section">
+                <div class="output-header">
+                    <h2>🗺️ ROUTING PIPELINE</h2>
+                    <div class="pipeline-controls">
+                        <button id="clearBtn" class="clear-btn">CLEAR</button>
+                        <button id="exportBtn" class="export-btn">EXPORT</button>
+                        <button id="testBtn" class="test-btn" onclick="terminal.testRoutingPipeline()" style="background: #ff6b35;">TEST</button>
+                        <button id="simpleTestBtn" class="test-btn" onclick="terminal.testSimpleDisplay()" style="background: #32CD32;">SIMPLE</button>
+                    </div>
+                </div>
+                
+                <div class="output-container" id="outputContainer">
+                    <div class="welcome-message">
+                        <div class="welcome-content">
+                            <h3>🚂 Welcome to the Dabbawala Network Router</h3>
+                            <p>Enter a delivery marker above to decode routing paths</p>
+                            <div class="system-info">
+                                <div class="info-item">
+                                    <span class="info-label">Sorting Hub:</span>
+                                    <span class="info-value">Dadar (10:30 AM)</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Network:</span>
+                                    <span class="info-value">Mumbai Railway System</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Status:</span>
+                                    <span class="info-value" id="welcomeStatus">Ready</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="terminal-footer">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <span>Bambaiyya-Binary v1.0.0</span>
+                    <span>•</span>
+                    <span>Mumbai Dabbawala Network Router</span>
+                    <span>•</span>
+                    <span id="currentTime"></span>
+                </div>
+                <div class="footer-links">
+                    <button id="statusBtn" class="footer-btn">System Status</button>
+                    <button id="protocolBtn" class="footer-btn">Protocol Info</button>
+                    <button id="helpBtn" class="footer-btn">Help</button>
+                </div>
+            </div>
+        </footer>
+        </div> <!-- End main-content -->
+    </div>
+
+    <!-- Tool Modal -->
+    <div class="tool-modal" id="toolModal">
+        <div class="tool-modal-content">
+            <div class="tool-modal-header">
+                <h3 id="toolModalTitle">Tool</h3>
+                <button class="tool-modal-close" id="toolModalClose">&times;</button>
+            </div>
+            <div class="tool-modal-body" id="toolModalBody">
+                <!-- Tool content populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <p>Processing delivery marker...</p>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Modal Title</h3>
+                <button class="modal-close" id="modalClose">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Modal content populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

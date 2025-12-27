@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Six-Sigma Test</title>
+</head>
+<body>
+    <h1>Testing Six-Sigma Features</h1>
+    <div id="results"></div>
+    
+    <script>
+        async function testSixSigmaFeatures() {
+            const testCases = [
+                "Red Triangle - VLP - 4",
+                "Blue Circle - DDR - 1", 
+                "Green Square - BKC - 7"
+            ];
+            
+            const results = document.getElementById('results');
+            
+            for (const marker of testCases) {
+                try {
+                    const response = await fetch('http://localhost:3000/api/parse', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ marker })
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (data.success && data.routingPath && data.routingPath.reliabilityMetrics) {
+                        const metrics = data.routingPath.reliabilityMetrics;
+                        results.innerHTML += `
+                            <div style="border: 1px solid #ccc; margin: 10px; padding: 10px;">
+                                <h3>Marker: ${marker}</h3>
+                                <p><strong>System Confidence:</strong> ${metrics.systemConfidence.displayFormat}</p>
+                                <p><strong>Complexity Rating:</strong> ${metrics.complexityScore.rating}</p>
+                                <p><strong>Hop Count:</strong> ${metrics.hopCount}</p>
+                                <p><strong>Threshold Status:</strong> ${metrics.thresholdStatus.message}</p>
+                                <p><strong>Degradation Factors:</strong> ${metrics.systemConfidence.degradationFactors.length} active</p>
+                                <p><strong>Alternate Routes:</strong> ${metrics.alternateRoutes.length} available</p>
+                            </div>
+                        `;
+                    } else {
+                        results.innerHTML += `<p>❌ Failed to get Six-Sigma metrics for: ${marker}</p>`;
+                    }
+                } catch (error) {
+                    results.innerHTML += `<p>❌ Error testing ${marker}: ${error.message}</p>`;
+                }
+            }
+        }
+        
+        // Run tests when page loads
+        window.onload = testSixSigmaFeatures;
+    </script>
+</body>
+</html>
